@@ -120,6 +120,8 @@ class CMakePreset:
             return False
         elif self.targetPlatform == 'android':
             return False
+        elif self.compiler == 'ninja':
+            return False
         return True
 
     def getCMakeSwitches(self):
@@ -159,6 +161,8 @@ class CMakePreset:
             outString = outString + '-G \"Visual Studio 16 2019\"'
         elif self.compiler == 'xcode':
             outString = outString + '-G Xcode'
+        elif self.compiler == 'ninja':
+            outString = outString + '-G Ninja'
         elif self.targetPlatform == 'android':
             outString = outString + '-G \"MinGW Makefiles\"'
         elif self.targetPlatform == 'linux':
@@ -317,6 +321,12 @@ class CMakePreset:
         elif self.targetPlatform == 'mac64':
             outString = outString + ' -DTARGET_BUILD_PLATFORM=mac'
             outString = outString + ' -DPX_OUTPUT_ARCH=x86'
+            outString = outString + ' -DPX_MAC_CLANG_ARCH=x86_64'
+            return outString
+        elif self.targetPlatform == 'macarm64':
+            outString = outString + ' -DTARGET_BUILD_PLATFORM=mac'
+            outString = outString + ' -DPX_OUTPUT_ARCH=arm'
+            outString = outString + ' -DPX_MAC_CLANG_ARCH=arm64'
             return outString
         elif self.targetPlatform == 'ios64':
             outString = outString + ' -DTARGET_BUILD_PLATFORM=ios'
@@ -393,7 +403,7 @@ def presetProvided(pName):
             # run the cmake script
             #print('Cmake params:' + cmakeParams)
             os.chdir(os.path.join(os.environ['PHYSX_ROOT_DIR'], outputDir))
-            # print(cmakeExec + ' \"' + os.environ['PHYSX_ROOT_DIR'] + '/compiler/' + cmakeMasterDir + '\"' + cmakeParams + ' -DCMAKE_BUILD_TYPE=' + config)
+            print(cmakeExec + ' \"' + os.environ['PHYSX_ROOT_DIR'] + '/compiler/' + cmakeMasterDir + '\"' + cmakeParams + ' -DCMAKE_BUILD_TYPE=' + config)
             os.system(cmakeExec + ' \"' + os.environ['PHYSX_ROOT_DIR'] + '/compiler/' +
                       cmakeMasterDir + '\"' + cmakeParams + ' -DCMAKE_BUILD_TYPE=' + config)
             os.chdir(os.environ['PHYSX_ROOT_DIR'])
