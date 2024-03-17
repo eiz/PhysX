@@ -30,6 +30,10 @@
 #ifndef PXFOUNDATION_PXPREPROCESSOR_H
 #define PXFOUNDATION_PXPREPROCESSOR_H
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 #include <stddef.h>
 #if !defined(PX_GENERATE_META_DATA)
 #include <ciso646>  
@@ -100,9 +104,9 @@ Operating system defines, see http://sourceforge.net/p/predef/wiki/OperatingSyst
 #define PX_ANDROID 1
 #elif defined(__linux__) || defined (__EMSCRIPTEN__) // note: __ANDROID__ implies __linux__
 #define PX_LINUX 1
-#elif defined(__APPLE__) && (defined(__arm__) || defined(__arm64__))
+#elif defined(__APPLE__) && TARGET_OS_IPHONE
 #define PX_IOS 1
-#elif defined(__APPLE__)
+#elif defined(__APPLE__) && TARGET_OS_MAC
 #define PX_OSX 1
 #elif defined(__ORBIS__)
 #define PX_PS4 1
